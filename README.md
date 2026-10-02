@@ -1,5 +1,5 @@
 Markdown
-# KubeSpectre 🛡️⚡
+# KubeSpectre
 
 > **Automated Kubernetes Incident Response Engine for Real-Time Threat Mitigation**
 
@@ -9,11 +9,11 @@ KubeSpectre is a zero-trust Kubernetes security and incident response engine. It
 
 ## Key Features
 
-* 📡 **Real-Time Audit Stream Ingestion:** High-throughput event processing using FastAPI webhooks and Redis event queues.
-* 🧠 **Rule-Based Threat Detection:** Identifies execution anomalies, secret access attempts, privilege escalation, and lateral movement signatures.
-* 🛡️️ **Autonomous Quarantine Engine:** Dynamically injects label-scoped `NetworkPolicy` objects (`run=<pod-label>`) to isolate compromised workloads without disrupting surrounding cluster services.
-* 🎯 **MITRE ATT&CK Mapping:** Designed around container threat tactics including **T1611 (Escape to Host)** and **T1078 (Valid Accounts)**.
-* 🪟 **Cross-Platform Host Support:** Fully compatible with local development environments running `k3d` / `k3s` across Linux and Windows.
+* **Real-Time Audit Stream Ingestion:** High-throughput event processing using FastAPI webhooks and Redis event queues.
+* **Rule-Based Threat Detection:** Identifies execution anomalies, secret access attempts, privilege escalation, and lateral movement signatures.
+* **Autonomous Quarantine Engine:** Dynamically injects label-scoped `NetworkPolicy` objects (`run=<pod-label>`) to isolate compromised workloads without disrupting surrounding cluster services.
+* **MITRE ATT&CK Mapping:** Designed around container threat tactics including **T1611 (Escape to Host)** and **T1078 (Valid Accounts)**.
+* **Cross-Platform Host Support:** Fully compatible with local development environments running `k3d` / `k3s` across Linux and Windows.
 
 ---
 
@@ -82,27 +82,22 @@ Local Verification & Testing
 To test the automated isolation mechanism against a target pod:
 
 Bash
-# 1. Deploy target application
+## 1. Deploy target application
 kubectl run target-nginx --image=nginx --labels="run=target-nginx"
 
-# 2. Simulate unauthorized exec / credential theft attempt
+## 2. Simulate unauthorized exec / credential theft attempt
 kubectl exec target-nginx -- sh -c "cat /var/run/secrets/kubernetes.io/serviceaccount/token"
 
-# 3. Confirm target pod isolation policy is deployed
+## 3. Confirm target pod isolation policy is deployed
 kubectl get networkpolicies
-Tech Stack
-Language: Python 3.10
 
-API Framework: FastAPI, Uvicorn
+### Tech Stack
+* **Language: Python 3.10**
+* **API Framework: FastAPI, Uvicorn**
+* **Message Broker: Redis**
+* **Orchestration / SDK: Kubernetes Python Client, kubectl**
+* **Local Cluster Environment: k3d / Docker**
 
-Message Broker: Redis
-
-Orchestration / SDK: Kubernetes Python Client, kubectl
-
-Local Cluster Environment: k3d / Docker
-
-License
+### License
 Distributed under the MIT License. See LICENSE for details.
 
-
----
