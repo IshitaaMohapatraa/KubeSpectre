@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spectre-agent-sa
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: spectre-agent-role
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/exec", "secrets"]
+    verbs: ["get", "list", "create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: spectre-agent-binding
+subjects:
+  - kind: ServiceAccount
+    name: spectre-agent-sa
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: spectre-agent-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spectre-agent
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spectre-agent
+  template:
+    metadata:
+      labels:
+        app: spectre-agent
+    spec:
+      serviceAccountName: spectre-agent-sa
+      containers:
+        - name: agent
+          image: python:3.11-slim
+          env:
+            - name: PYTHONPATH
+              value: "/app"
+          command: ["sh", "-c", "pip install kubernetes && python /app/agent.py"]
+          volumeMounts:
+            - name: agent-root
+              mountPath: /app/agent.py
+              subPath: agent.py
+            - name: agent-attacks
+              mountPath: /app/attacks
+      volumes:
+        - name: agent-root
+          configMap:
+            name: spectre-agent-root
+        - name: agent-attacks
+          configMap:
+            name: spectre-agent-attacks

@@ -1,0 +1,21 @@
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+  # 1. Ignore high-volume system noise
+  - level: None
+    users: ["system:kube-scheduler", "system:kube-controller-manager", "system:node:*"]
+
+  # 2. Log high-risk actions (pod exec, secrets, RBAC, service accounts) with full payloads
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["pods", "pods/exec", "secrets", "serviceaccounts"]
+      - group: "rbac.authorization.k8s.io"
+        resources: ["clusterroles", "clusterrolebindings", "roles", "rolebindings"]
+      - group: "authorization.k8s.io"
+        resources: ["selfsubjectaccessreviews", "subjectaccessreviews"]
+
+  # 3. Log everything else at Metadata level (user, timestamp, path)
+  - level: Metadata
+    omitStages:
+      - "RequestReceived"

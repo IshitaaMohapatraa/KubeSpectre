@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Config
+preferences: {}
+clusters:
+  - name: spectre-guard-receiver
+    cluster:
+      # host.k3d.internal resolves to localhost on your machine
+      server: http://host.k3d.internal:8000/api/v1/audit-webhook
+contexts:
+  - name: webhook
+    context:
+      cluster: spectre-guard-receiver
+      user: ""
+current-context: webhook
