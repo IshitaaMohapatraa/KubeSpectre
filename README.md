@@ -12,9 +12,9 @@ KubeSpectre is a zero-trust Kubernetes security and incident response engine. It
 * **Cross-Platform Host Support:** Fully compatible with local development environments running k3d / k3s across Linux and Windows.
 
 ## System Architecture
-```text
+
 KubeSpectre uses a webhook-driven ingestion pipeline combined with a Redis queue and an automated response engine to ensure rapid threat mitigation before an attacker can escalate privileges in the cluster.
-```
+```text
 +-----------------------------------------------------------------------+
 |                        KUBERNETES CLUSTER                             |
 |                                                                       |
