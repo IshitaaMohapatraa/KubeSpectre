@@ -1,5 +1,6 @@
 # KubeSpectre
 > **Automated Kubernetes Incident Response Engine for Real-Time Threat Mitigation**
+
 KubeSpectre is a zero-trust Kubernetes security and incident response engine. It continuously ingests Kubernetes API audit streams, analyzes event patterns for malicious behaviors, and dynamically triggers automated pod-level isolation via granular NetworkPolicy enforcement.
 
 ## Features
@@ -13,7 +14,7 @@ KubeSpectre is a zero-trust Kubernetes security and incident response engine. It
 ## System Architecture
 ```text
 KubeSpectre uses a webhook-driven ingestion pipeline combined with a Redis queue and an automated response engine to ensure rapid threat mitigation before an attacker can escalate privileges in the cluster.
-
+```
 +-----------------------------------------------------------------------+
 |                        KUBERNETES CLUSTER                             |
 |                                                                       |
